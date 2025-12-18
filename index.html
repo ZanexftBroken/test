@@ -80,6 +80,7 @@
       position: relative;
       overflow-x: hidden;
       font-family: 'Open Sans', sans-serif;
+      padding: 20px;
     }
     
     body[data-theme="dark"]::before {
@@ -146,7 +147,7 @@
     .container {
       max-width: 1600px;
       margin: 0 auto;
-      padding: 30px 20px;
+      padding: 20px;
     }
     
     /* Theme Switcher */
@@ -1133,7 +1134,7 @@
       <p id="loadingText">Processing data...</p>
     </div>
 
-    <div id="loginContainer" class="login-container">
+    <div id="loginContainer" class="login-container" style="display: block;">
       <h2>Welcome Back</h2>
       <form id="loginForm" class="login-form">
         <div class="form-group" style="margin-bottom:25px;text-align:left">
@@ -1374,13 +1375,12 @@
   </div>
 
   <script>
-    // Supabase Configuration - Replace with your credentials
+    // Supabase Configuration - YOUR CREDENTIALS ARE ALREADY HERE
     const supabaseUrl = 'https://jnoetvzvsssuehxzvhrb.supabase.co';
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impub2V0dnp2c3NzdWVoeHp2aHJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNjQ2MjMsImV4cCI6MjA4MTY0MDYyM30.JdKegnbA-fPfVq6d16RkqehZjb1lEV87Ix2-JenR--k';
     
     // Initialize Supabase client
-    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
-
+    let supabase;
     let profiles = [];
     let selectedTitle = '';
     let selectedRevalidationType = '';
@@ -1472,29 +1472,42 @@
     const profilePhoto = document.getElementById('profilePhoto');
     const rankSelect = document.getElementById('rank');
 
-    document.addEventListener('DOMContentLoaded', initApp);
-    loginForm.addEventListener('submit', loginUser);
-    logoutBtn.addEventListener('click', logoutUser);
-    exportBtn.addEventListener('click', exportToCSV);
-    addDataBtn.addEventListener('click', showTitleDialog);
-    searchBtn.addEventListener('click', showSearch);
-    profileForm.addEventListener('submit', saveProfile);
-    searchSubmit.addEventListener('click', searchProfiles);
-    dateSearch.addEventListener('click', searchByDate);
-    cancelBtn.addEventListener('click', hideForm);
-    updateBtn.addEventListener('click', updateProfile);
-    feesPercentage.addEventListener('input', updateProgressBar);
+    // Initialize app when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Supabase client
+        supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+        
+        // Set up event listeners
+        setupEventListeners();
+        
+        // Initialize the app
+        initApp();
+    });
 
-    newCDCOption.addEventListener('click', () => selectTitle('NEW CDC'));
-    revalidationOption.addEventListener('click', () => selectTitle('REVALIDATION'));
-    crewOption.addEventListener('click', () => selectRevalidationType('CREW'));
-    officerOption.addEventListener('click', () => selectRevalidationType('OFFICER'));
-    confirmTitle.addEventListener('click', confirmTitleSelection);
-    cancelTitle.addEventListener('click', hideTitleDialog);
+    function setupEventListeners() {
+        loginForm.addEventListener('submit', loginUser);
+        logoutBtn.addEventListener('click', logoutUser);
+        exportBtn.addEventListener('click', exportToCSV);
+        addDataBtn.addEventListener('click', showTitleDialog);
+        searchBtn.addEventListener('click', showSearch);
+        profileForm.addEventListener('submit', saveProfile);
+        searchSubmit.addEventListener('click', searchProfiles);
+        dateSearch.addEventListener('click', searchByDate);
+        cancelBtn.addEventListener('click', hideForm);
+        updateBtn.addEventListener('click', updateProfile);
+        feesPercentage.addEventListener('input', updateProgressBar);
 
-    startCamera.addEventListener('click', startWebcam);
-    capturePhoto.addEventListener('click', captureWebcam);
-    retakePhoto.addEventListener('click', retakeWebcam);
+        newCDCOption.addEventListener('click', () => selectTitle('NEW CDC'));
+        revalidationOption.addEventListener('click', () => selectTitle('REVALIDATION'));
+        crewOption.addEventListener('click', () => selectRevalidationType('CREW'));
+        officerOption.addEventListener('click', () => selectRevalidationType('OFFICER'));
+        confirmTitle.addEventListener('click', confirmTitleSelection);
+        cancelTitle.addEventListener('click', hideTitleDialog);
+
+        startCamera.addEventListener('click', startWebcam);
+        capturePhoto.addEventListener('click', captureWebcam);
+        retakePhoto.addEventListener('click', retakeWebcam);
+    }
 
     async function initApp() {
       updateSyncStatus('Initializing System...', 'syncing');
@@ -2238,4 +2251,4 @@
     }
   </script>
 </body>
-</html>
+</html>         
